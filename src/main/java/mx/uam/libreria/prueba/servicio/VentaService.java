@@ -6,6 +6,7 @@ import java.util.Optional;
 import mx.uam.libreria.prueba.dto.TicketDTO;
 import mx.uam.libreria.prueba.dto.SolicitudVentaDTO;
 import mx.uam.libreria.prueba.entidades.DetalleVenta;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface VentaService {
     List<Venta> listarTodas();
@@ -13,7 +14,13 @@ public interface VentaService {
     Venta guardarVenta(Venta venta);
     void eliminarVenta(Long id);
     Venta procesarVenta(Long clienteId, List<DetalleVenta> detallesRequest);
-    TicketDTO generarTicketVenta(Long clienteId, List<SolicitudVentaDTO.ItemVentaDTO> items);
+
+    // Cambiado de ItemVentaDTO a SolicitudVentaDTO.DetalleVentaDTO
+    TicketDTO generarTicketVenta(Long clienteId, List<SolicitudVentaDTO.DetalleVentaDTO> items);
+
     Optional<TicketDTO> obtenerTicketPorVentaId(Long id);
-    boolean existeVenta(Long id); 
+    boolean existeVenta(Long id);
+
+    @Transactional
+    Venta registrarVenta(SolicitudVentaDTO solicitud);
 }
