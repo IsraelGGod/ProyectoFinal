@@ -3,63 +3,85 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin CRUD | PruebaRepository</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <title>Librería UAM</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <div class="container">
-    <!-- Header -->
-    <header class="header">
-      <h1><i class="fas fa-book-open"></i> Mi Librería API</h1>
-      <button id="add-btn" class="btn btn-primary">
-        <i class="fas fa-plus"></i> Nuevo Item
-      </button>
-    </header>
+<header>
+  <h1>📚 Librería UAM</h1>
+  <nav>
+    <button class="tab-btn active" data-tab="clientes">Clientes</button>
+    <button class="tab-btn" data-tab="libros">Libros</button>
+    <button class="tab-btn" data-tab="ventas">Vender</button>
+  </nav>
+</header>
 
-    <!-- Tabla de datos -->
-    <main class="main-content">
-      <table id="data-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- Datos dinámicos desde la API -->
-        </tbody>
-      </table>
-    </main>
+<main>
+  <!-- Sección Clientes -->
+  <section id="clientes" class="tab-content active">
+    <h2>Gestión de Clientes</h2>
+    <form id="form-cliente">
+      <input type="hidden" id="cliente-id">
+      <input type="text" id="cliente-nombre" placeholder="Nombre" required>
+      <input type="email" id="cliente-email" placeholder="Email" required>
+      <input type="text" id="cliente-telefono" placeholder="Teléfono">
+      <input type="text" id="cliente-matricula" placeholder="Matrícula (ej: A1234)">
+      <button type="submit">Guardar</button>
+      <button type="button" id="cancelar-cliente">Cancelar</button>
+    </form>
+    <table id="tabla-clientes">
+      <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Email</th>
+        <th>Matrícula</th>
+        <th>Acciones</th>
+      </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+  </section>
 
-    <!-- Modal para agregar/editar -->
-    <div id="modal" class="modal">
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2 id="modal-title"><i class="fas fa-edit"></i> Nuevo Item</h2>
-        <form id="item-form">
-          <input type="hidden" id="item-id">
-          <div class="form-group">
-            <label for="name"><i class="fas fa-tag"></i> Nombre:</label>
-            <input type="text" id="name" required>
-          </div>
-          <div class="form-group">
-            <label for="description"><i class="fas fa-align-left"></i> Descripción:</label>
-            <textarea id="description" rows="3"></textarea>
-          </div>
-          <button type="submit" class="btn btn-submit">
-            <i class="fas fa-save"></i> Guardar
-          </button>
-        </form>
-      </div>
+  <!-- Sección Libros -->
+  <section id="libros" class="tab-content">
+    <h2>Catálogo de Libros</h2>
+    <form id="form-libro">
+      <input type="hidden" id="libro-id">
+      <input type="text" id="libro-titulo" placeholder="Título" required>
+      <input type="text" id="libro-autor" placeholder="Autor" required>
+      <input type="number" id="libro-precio" placeholder="Precio" min="0" step="0.01" required>
+      <input type="number" id="libro-stock" placeholder="Stock" min="0" required>
+      <button type="submit">Guardar</button>
+      <button type="button" id="cancelar-libro">Cancelar</button>
+    </form>
+    <div class="search">
+      <input type="text" id="buscar-libro" placeholder="Buscar por título/autor...">
     </div>
+    <div id="lista-libros" class="grid-container"></div>
+  </section>
 
-    <!-- Notificaciones tipo Toast -->
-    <div id="toast" class="toast"></div>
-  </div>
+  <!-- Sección Ventas -->
+  <section id="ventas" class="tab-content">
+    <h2>Proceso de Venta</h2>
+    <div class="venta-container">
+      <div class="carrito">
+        <h3>Carrito</h3>
+        <select id="cliente-venta">
+          <option value="">Seleccione cliente</option>
+        </select>
+        <ul id="items-carrito"></ul>
+        <div class="total">
+          <p>Subtotal: $<span id="subtotal">0.00</span></p>
+          <p>Descuento: <input type="number" id="descuento" min="0" max="100" value="0">%</p>
+          <p>Total: $<span id="total-venta">0.00</span></p>
+          <button id="finalizar-venta">Finalizar Venta</button>
+        </div>
+      </div>
+      <div id="ticket-preview" class="ticket"></div>
+    </div>
+  </section>
+</main>
 
-  <script src="script.js"></script>
+<script src="scripts.js"></script>
 </body>
 </html>

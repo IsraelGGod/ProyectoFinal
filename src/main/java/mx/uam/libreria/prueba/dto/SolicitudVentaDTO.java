@@ -1,22 +1,43 @@
 package mx.uam.libreria.prueba.dto;
 
-import jakarta.validation.constraints.*;
 import java.util.List;
 
 public class SolicitudVentaDTO {
-    @NotNull(message = "El ID de cliente es obligatorio")
     private Long clienteId;
-    
-    @NotEmpty(message = "Debe incluir al menos un libro")
-    private List<ItemVentaDTO> items;
+    private double descuento;
+    private List<DetalleVentaDTO> detalles;
 
-    public static class ItemVentaDTO {
-        @NotNull
+    // Getters y Setters
+    public Long getClienteId() {
+        return clienteId;
+    }
+
+    public void setClienteId(Long clienteId) {
+        this.clienteId = clienteId;
+    }
+
+    public double getDescuento() {
+        return descuento;
+    }
+
+    public void setDescuento(double descuento) {
+        this.descuento = descuento;
+    }
+
+    public List<DetalleVentaDTO> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(List<DetalleVentaDTO> detalles) {
+        this.detalles = detalles;
+    }
+
+    // Clase interna para los detalles
+    public static class DetalleVentaDTO {
         private Long libroId;
-        
-        @Min(1)
         private int cantidad;
 
+        // Getters y Setters
         public Long getLibroId() {
             return libroId;
         }
@@ -32,21 +53,5 @@ public class SolicitudVentaDTO {
         public void setCantidad(int cantidad) {
             this.cantidad = cantidad;
         }
-    }
-
-    public Long getClienteId() {
-        return clienteId;
-    }
-
-    public void setClienteId(Long clienteId) {
-        this.clienteId = clienteId;
-    }
-
-    public List<ItemVentaDTO> getItems() {
-        return items;
-    }
-
-    public void setItems(List<ItemVentaDTO> items) {
-        this.items = items;
     }
 }
