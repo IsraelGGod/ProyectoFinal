@@ -8,7 +8,6 @@ import mx.uam.libreria.prueba.dto.SolicitudVentaDTO;
 import mx.uam.libreria.prueba.entidades.DetalleVenta;
 import org.springframework.transaction.annotation.Transactional;
 
-
 public interface VentaService {
     List<Venta> listarTodas();
     Optional<Venta> obtenerVentaPorId(Long id);
