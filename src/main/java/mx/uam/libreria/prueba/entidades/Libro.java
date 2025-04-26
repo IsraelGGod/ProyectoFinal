@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 @Entity
 @Table(name = "libros")
 public class Libro {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,18 +29,24 @@ public class Libro {
     @Column(nullable = false)
     private Integer stock;
 
-    // Constructores
-    public Libro() {
-    }
+    @NotBlank(message = "El código de barras no puede estar en blanco")
+    @Column(name = "codigo_barras", nullable = false)
+    private String codigoBarras;
 
-    public Libro(String titulo, String autor, double precio, Integer stock) {
+    // === Constructores ===
+
+    public Libro() {}
+
+    public Libro(String titulo, String autor, double precio, Integer stock, String codigoBarras) {
         this.titulo = titulo;
         this.autor = autor;
         this.precio = precio;
         this.stock = stock;
+        this.codigoBarras = codigoBarras;
     }
 
-    // Getters y Setters con validaciones
+    // === Getters y Setters ===
+
     public Long getId() {
         return id;
     }
@@ -92,30 +99,31 @@ public class Libro {
         this.stock = stock;
     }
 
-    // Métodos de negocio
-    /**
-     * Reduce el stock del libro cuando se vende
-     * @param cantidad La cantidad a reducir
-     * @throws IllegalArgumentException Si la cantidad no es positiva
-     * @throws IllegalStateException Si no hay suficiente stock
-     */
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        if (codigoBarras == null || codigoBarras.trim().isEmpty()) {
+            throw new IllegalArgumentException("El código de barras no puede estar vacío");
+        }
+        this.codigoBarras = codigoBarras;
+    }
+
+    // === Métodos de negocio ===
+
     public void reducirStock(int cantidad) {
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser positiva");
         }
         if (this.stock < cantidad) {
             throw new IllegalStateException(
-                String.format("Stock insuficiente. Disponible: %d, Solicitado: %d", this.stock, cantidad)
+                    String.format("Stock insuficiente. Disponible: %d, Solicitado: %d", this.stock, cantidad)
             );
         }
         this.stock -= cantidad;
     }
 
-    /**
-     * Aumenta el stock del libro (para reposiciones)
-     * @param cantidad La cantidad a aumentar
-     * @throws IllegalArgumentException Si la cantidad no es positiva
-     */
     public void aumentarStock(int cantidad) {
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad debe ser positiva");
@@ -123,14 +131,15 @@ public class Libro {
         this.stock += cantidad;
     }
 
-    // Métodos de comparación
+    // === Métodos utilitarios ===
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Libro libro = (Libro) o;
-        return titulo.equalsIgnoreCase(libro.titulo) && 
-               autor.equalsIgnoreCase(libro.autor);
+        return titulo.equalsIgnoreCase(libro.titulo) &&
+                autor.equalsIgnoreCase(libro.autor);
     }
 
     @Override
@@ -141,8 +150,8 @@ public class Libro {
     @Override
     public String toString() {
         return String.format(
-            "Libro [id=%d, titulo='%s', autor='%s', precio=%.2f, stock=%d]",
-            id, titulo, autor, precio, stock
+                "Libro [id=%d, titulo='%s', autor='%s', precio=%.2f, stock=%d, codigoBarras='%s']",
+                id, titulo, autor, precio, stock, codigoBarras
         );
     }
 }

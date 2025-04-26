@@ -23,21 +23,21 @@ public class ClienteController {
     private ClienteService clienteService;
 
     /**
-     * Obtiene todos los clientes
+     * Lista todos los clientes o filtra por estado de matrícula.
      */
     @GetMapping
     public ResponseEntity<List<Cliente>> listarClientes(
-        @RequestParam(required = false) Boolean matriculado) {
-        
-        List<Cliente> clientes = matriculado != null ? 
-            clienteService.buscarPorMatriculacion(matriculado) : 
-            clienteService.listarTodos();
-            
+            @RequestParam(required = false) Boolean matriculado) {
+
+        List<Cliente> clientes = matriculado != null
+                ? clienteService.buscarPorMatriculacion(matriculado)
+                : clienteService.listarTodos();
+
         return ResponseEntity.ok(clientes);
     }
 
     /**
-     * Crea un nuevo cliente con validación
+     * Crea un nuevo cliente con validación de datos.
      */
     @PostMapping
     public ResponseEntity<?> crearCliente(
@@ -59,7 +59,7 @@ public class ClienteController {
     }
 
     /**
-     * Obtiene un cliente por ID
+     * Obtiene un cliente por su ID.
      */
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> obtenerClientePorId(@PathVariable Long id) {
@@ -69,7 +69,7 @@ public class ClienteController {
     }
 
     /**
-     * Actualiza un cliente existente
+     * Actualiza un cliente existente.
      */
     @PutMapping("/{id}")
     public ResponseEntity<?> actualizarCliente(
@@ -91,11 +91,13 @@ public class ClienteController {
             return ResponseEntity.ok(clienteActualizado);
         } catch (DataIntegrityViolationException e) {
             return ResponseEntity.badRequest().body("Error: El email o matrícula ya existen");
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     /**
-     * Elimina un cliente
+     * Elimina un cliente por su ID.
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarCliente(@PathVariable Long id) {
@@ -107,22 +109,24 @@ public class ClienteController {
     }
 
     /**
-     * Busca clientes por matrícula
+     * Busca clientes por matrícula.
      */
     @GetMapping("/buscar")
-    public ResponseEntity<List<Cliente>> buscarPorMatricula(
-            @RequestParam String matricula) {
-        return ResponseEntity.ok(
-            clienteService.buscarPorMatricula(matricula.toUpperCase()));
+    public ResponseEntity<List<Cliente>> buscarPorMatricula(@RequestParam String matricula) {
+        List<Cliente> clientes = clienteService.buscarPorMatricula(matricula.toUpperCase());
+        return ResponseEntity.ok(clientes);
     }
 
-    // Método auxiliar para procesar errores de validación
+    /**
+     * Procesa errores de validación y devuelve un mapa de campos con sus respectivos mensajes.
+     */
     private Map<String, String> obtenerErroresValidacion(BindingResult result) {
         return result.getFieldErrors()
                 .stream()
                 .collect(Collectors.toMap(
                         FieldError::getField,
                         FieldError::getDefaultMessage,
-                        (existente, nuevo) -> existente));
+                        (mensajeExistente, nuevoMensaje) -> mensajeExistente
+                ));
     }
 }

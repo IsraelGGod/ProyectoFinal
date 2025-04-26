@@ -64,4 +64,10 @@ public class LibroServiceImpl implements LibroService {
     public void eliminarLibro(Long id) {
         libroRepository.deleteById(id);
     }
+
+    @Transactional
+    public void actualizarStockDirecto(Long id, int cantidad) {
+        libroRepository.actualizarStock(id, cantidad);
+    }
+
 }
