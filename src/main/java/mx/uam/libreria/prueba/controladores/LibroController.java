@@ -2,29 +2,27 @@ package mx.uam.libreria.prueba.controladores;
 
 import mx.uam.libreria.prueba.entidades.Libro;
 import mx.uam.libreria.prueba.servicio.LibroService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/libros")
 public class LibroController {
 
-    @Autowired
-    private LibroService libroService;
+    private final LibroService libroService;
+
+    public LibroController(LibroService libroService) {
+        this.libroService = libroService;
+    }
 
     @GetMapping
     public ResponseEntity<List<Libro>> listarLibros(
             @RequestParam(required = false) String titulo,
             @RequestParam(required = false) String autor) {
-        
+
         List<Libro> libros;
         if (titulo != null) {
             libros = libroService.buscarPorTitulo(titulo);
@@ -37,22 +35,9 @@ public class LibroController {
     }
 
     @PostMapping
-    public ResponseEntity<?> crearLibro(
-            @Valid @RequestBody Libro libro,
-            BindingResult result) {
-        
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest()
-                    .body(obtenerErroresValidacion(result));
-        }
-        
-        try {
-            Libro nuevoLibro = libroService.guardarLibro(libro);
-            return ResponseEntity.status(HttpStatus.CREATED).body(nuevoLibro);
-        } catch (DataIntegrityViolationException e) {
-            return ResponseEntity.badRequest()
-                    .body("Error: Ya existe un libro con ese título");
-        }
+    public ResponseEntity<Libro> crearLibro(@Valid @RequestBody Libro libro) {
+        Libro nuevoLibro = libroService.guardarLibro(libro);
+        return ResponseEntity.status(HttpStatus.CREATED).body(nuevoLibro);
     }
 
     @GetMapping("/{id}")
@@ -63,20 +48,14 @@ public class LibroController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> actualizarLibro(
+    public ResponseEntity<Libro> actualizarLibro(
             @PathVariable Long id,
-            @Valid @RequestBody Libro libro,
-            BindingResult result) {
-        
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest()
-                    .body(obtenerErroresValidacion(result));
-        }
-        
+            @Valid @RequestBody Libro libro) {
+
         if (!libroService.existeLibro(id)) {
             return ResponseEntity.notFound().build();
         }
-        
+
         libro.setId(id);
         Libro libroActualizado = libroService.actualizarLibro(libro);
         return ResponseEntity.ok(libroActualizado);
@@ -86,7 +65,7 @@ public class LibroController {
     public ResponseEntity<Libro> actualizarStock(
             @PathVariable Long id,
             @RequestParam int cantidad) {
-        
+
         return libroService.actualizarStock(id, cantidad)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
@@ -99,15 +78,5 @@ public class LibroController {
         }
         libroService.eliminarLibro(id);
         return ResponseEntity.noContent().build();
-    }
-
-    // Método auxiliar para procesar errores de validación
-    private Map<String, String> obtenerErroresValidacion(BindingResult result) {
-        return result.getFieldErrors()
-                .stream()
-                .collect(Collectors.toMap(
-                        fieldError -> fieldError.getField(),
-                        fieldError -> fieldError.getDefaultMessage(),
-                        (existente, nuevo) -> existente));
     }
 }

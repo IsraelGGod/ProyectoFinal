@@ -3,7 +3,6 @@ package mx.uam.libreria.prueba.controladores;
 import mx.uam.libreria.prueba.dto.SolicitudVentaDTO;
 import mx.uam.libreria.prueba.entidades.Venta;
 import mx.uam.libreria.prueba.servicio.VentaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,8 +10,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/ventas")
 public class VentaController {
 
-    @Autowired
-    private VentaService ventaService;
+    private final VentaService ventaService;
+
+    public VentaController(VentaService ventaService) {
+        this.ventaService = ventaService;
+    }
 
     @PostMapping
     public ResponseEntity<Venta> crearVenta(@RequestBody SolicitudVentaDTO solicitud) {

@@ -3,7 +3,6 @@ package mx.uam.libreria.prueba.servicio.Impl;
 import mx.uam.libreria.prueba.entidades.Cliente;
 import mx.uam.libreria.prueba.repositorio.ClienteRepository;
 import mx.uam.libreria.prueba.servicio.ClienteService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -11,8 +10,11 @@ import java.util.Optional;
 @Service
 public class ClienteServiceImpl implements ClienteService {
 
-    @Autowired
-    private ClienteRepository clienteRepository;
+    private final ClienteRepository clienteRepository;
+
+    public ClienteServiceImpl(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
 
     @Override
     public List<Cliente> listarTodos() {
@@ -39,7 +41,6 @@ public class ClienteServiceImpl implements ClienteService {
         clienteRepository.deleteById(id);
     }
 
-    // Implementación de nuevos métodos
     @Override
     public List<Cliente> buscarPorMatriculacion(boolean matriculado) {
         return clienteRepository.findByMatriculado(matriculado);

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "clientes")
 public class Cliente {
@@ -13,7 +15,7 @@ public class Cliente {
 
     @Column(nullable = false, length = 100)
     private String nombre;
-    
+
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 
@@ -36,10 +38,10 @@ public class Cliente {
         this.nombre = nombre;
         this.email = email;
         this.telefono = telefono;
-        this.setMatricula(matricula); // Usa el setter para validación
+        this.setMatricula(matricula);
     }
 
-    // Getters y Setters
+    // Getters y Setters (con validaciones)
     public Long getId() {
         return id;
     }
@@ -96,11 +98,27 @@ public class Cliente {
         return matriculado;
     }
 
-    // Método de negocio para validar formato específico
+    // Métodos de negocio
     public boolean validarFormatoMatricula() {
         return this.matricula != null && this.matricula.matches("^[A-Z]\\d{4,8}$");
     }
 
+    // equals() y hashCode() mejorados
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cliente cliente = (Cliente) o;
+        return email.equals(cliente.email) ||
+                (matricula != null && matricula.equals(cliente.matricula));
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email, matricula);
+    }
+
+    // toString() completo
     @Override
     public String toString() {
         return "Cliente{" +
@@ -111,20 +129,5 @@ public class Cliente {
                 ", matricula='" + matricula + '\'' +
                 ", matriculado=" + matriculado +
                 '}';
-    }
-
-    // Método equals() y hashCode() para comparación por matrícula/email
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Cliente cliente = (Cliente) o;
-        return email.equals(cliente.email) || 
-               (matricula != null && matricula.equals(cliente.matricula));
-    }
-
-    @Override
-    public int hashCode() {
-        return 31 * (email.hashCode() + (matricula != null ? matricula.hashCode() : 0));
     }
 }

@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Librería Universitaria UAM</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+<header>
+    <div class="logo-container">
+        <img src="img/logo.png" alt="Logo Librería UAM">
+        <h1>Librería Universitaria UAM</h1>
+    </div>
+    <nav>
+        <ul>
+            <li><a href="#" class="nav-link active" data-section="inicio">Inicio</a></li>
+            <li><a href="#" class="nav-link" data-section="clientes">Clientes</a></li>
+            <li><a href="#" class="nav-link" data-section="libros">Libros</a></li>
+            <li><a href="#" class="nav-link" data-section="ventas">Ventas</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main>
+    <!-- Sección Inicio -->
+    <section id="inicio" class="content-section active">
+        <div class="welcome-banner">
+            <h2>Bienvenido al Sistema de Gestión de Librería</h2>
+            <p>Gestiona clientes, libros y ventas de manera eficiente</p>
+        </div>
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>Clientes Registrados</h3>
+                <p id="total-clientes">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Libros en Inventario</h3>
+                <p id="total-libros">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>Ventas Hoy</h3>
+                <p id="ventas-hoy">0</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Clientes -->
+    <section id="clientes" class="content-section">
+        <div class="section-header">
+            <h2>Gestión de Clientes</h2>
+            <button id="nuevo-cliente" class="btn-primary">Nuevo Cliente</button>
+        </div>
+
+        <div class="clientes-container">
+            <div class="search-bar">
+                <input type="text" id="buscar-cliente" placeholder="Buscar cliente...">
+                <button id="btn-buscar-cliente">Buscar</button>
+            </div>
+
+            <div class="table-container">
+                <table id="tabla-clientes">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Matrícula</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Datos se llenarán con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Libros -->
+    <section id="libros" class="content-section">
+        <div class="section-header">
+            <h2>Gestión de Libros</h2>
+            <button id="nuevo-libro" class="btn-primary">Nuevo Libro</button>
+        </div>
+
+        <div class="libros-container">
+            <div class="search-bar">
+                <input type="text" id="buscar-libro" placeholder="Buscar libro...">
+                <select id="filtro-libro">
+                    <option value="titulo">Título</option>
+                    <option value="autor">Autor</option>
+                </select>
+                <button id="btn-buscar-libro">Buscar</button>
+            </div>
+
+            <div class="table-container">
+                <table id="tabla-libros">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Título</th>
+                        <th>Autor</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Datos se llenarán con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Ventas -->
+    <section id="ventas" class="content-section">
+        <div class="section-header">
+            <h2>Registro de Ventas</h2>
+            <button id="nueva-venta" class="btn-primary">Nueva Venta</button>
+        </div>
+
+        <div class="ventas-container">
+            <div class="table-container">
+                <table id="tabla-ventas">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Cliente</th>
+                        <th>Fecha</th>
+                        <th>Total</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Datos se llenarán con JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Modales -->
+<div id="modal-cliente" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-cliente-titulo">Nuevo Cliente</h2>
+        <form id="form-cliente">
+            <input type="hidden" id="cliente-id">
+            <div class="form-group">
+                <label for="cliente-nombre">Nombre</label>
+                <input type="text" id="cliente-nombre" required>
+            </div>
+            <div class="form-group">
+                <label for="cliente-email">Email</label>
+                <input type="email" id="cliente-email" required>
+            </div>
+            <div class="form-group">
+                <label for="cliente-telefono">Teléfono</label>
+                <input type="text" id="cliente-telefono">
+            </div>
+            <div class="form-group">
+                <label for="cliente-matricula">Matrícula</label>
+                <input type="text" id="cliente-matricula">
+            </div>
+            <button type="submit" class="btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<div id="modal-libro" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-libro-titulo">Nuevo Libro</h2>
+        <form id="form-libro">
+            <input type="hidden" id="libro-id">
+            <div class="form-group">
+                <label for="libro-titulo">Título</label>
+                <input type="text" id="libro-titulo" required>
+            </div>
+            <div class="form-group">
+                <label for="libro-autor">Autor</label>
+                <input type="text" id="libro-autor" required>
+            </div>
+            <div class="form-group">
+                <label for="libro-precio">Precio</label>
+                <input type="number" id="libro-precio" step="0.01" required>
+            </div>
+            <div class="form-group">
+                <label for="libro-stock">Stock</label>
+                <input type="number" id="libro-stock" required>
+            </div>
+            <button type="submit" class="btn-primary">Guardar</button>
+        </form>
+    </div>
+</div>
+
+<div id="modal-venta" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2 id="modal-venta-titulo">Nueva Venta</h2>
+        <form id="form-venta">
+            <input type="hidden" id="venta-id">
+            <div class="form-group">
+                <label for="venta-cliente">Cliente</label>
+                <select id="venta-cliente" required>
+                    <option value="">Seleccione un cliente</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="venta-descuento">Descuento (%)</label>
+                <input type="number" id="venta-descuento" min="0" max="100" value="0">
+            </div>
+
+            <h3>Detalles de Venta</h3>
+            <div class="detalles-venta">
+                <div class="detalle-item">
+                    <select class="detalle-libro">
+                        <option value="">Seleccione un libro</option>
+                    </select>
+                    <input type="number" class="detalle-cantidad" min="1" value="1" placeholder="Cantidad">
+                    <button type="button" class="btn-eliminar-detalle">Eliminar</button>
+                </div>
+            </div>
+            <button type="button" id="agregar-detalle" class="btn-secondary">+ Agregar Libro</button>
+
+            <div class="resumen-venta">
+                <p><strong>Subtotal:</strong> $<span id="venta-subtotal">0.00</span></p>
+                <p><strong>Descuento:</strong> $<span id="venta-descuento-monto">0.00</span></p>
+                <p><strong>Total:</strong> $<span id="venta-total">0.00</span></p>
+            </div>
+
+            <button type="submit" class="btn-primary">Registrar Venta</button>
+        </form>
+    </div>
+</div>
+
+<div id="modal-detalle-venta" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Detalles de Venta</h2>
+        <div id="detalle-venta-info">
+            <p><strong>Cliente:</strong> <span id="detalle-cliente"></span></p>
+            <p><strong>Fecha:</strong> <span id="detalle-fecha"></span></p>
+            <p><strong>Total:</strong> $<span id="detalle-total"></span></p>
+
+            <h3>Libros vendidos</h3>
+            <table id="tabla-detalle-venta">
+                <thead>
+                <tr>
+                    <th>Libro</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Datos se llenarán con JavaScript -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="module" src="js/main.js"></script>
+</body>
+</html>
