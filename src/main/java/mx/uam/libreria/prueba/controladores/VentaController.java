@@ -22,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/ventas")
-@CrossOrigin(origins = "http://127.0.0.1:5500") // Permite llamadas desde tu frontend
+@CrossOrigin(origins = "http://127.0.0.1:5500") // Permite llamadas desde  frontend
 public class VentaController {
 
     @Autowired
