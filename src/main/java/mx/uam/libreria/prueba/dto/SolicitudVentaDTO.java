@@ -7,6 +7,17 @@ public class SolicitudVentaDTO {
     private double descuento;
     private List<DetalleVentaDTO> detalles;
 
+    // Constructor vacío
+    public SolicitudVentaDTO() {
+    }
+
+    // Constructor con todos los campos
+    public SolicitudVentaDTO(Long clienteId, double descuento, List<DetalleVentaDTO> detalles) {
+        this.clienteId = clienteId;
+        this.descuento = descuento;
+        this.detalles = detalles;
+    }
+
     // Getters y Setters
     public Long getClienteId() {
         return clienteId;
@@ -36,6 +47,16 @@ public class SolicitudVentaDTO {
     public static class DetalleVentaDTO {
         private Long libroId;
         private int cantidad;
+
+        // Constructor vacío
+        public DetalleVentaDTO() {
+        }
+
+        // Constructor con todos los campos
+        public DetalleVentaDTO(Long libroId, int cantidad) {
+            this.libroId = libroId;
+            this.cantidad = cantidad;
+        }
 
         // Getters y Setters
         public Long getLibroId() {

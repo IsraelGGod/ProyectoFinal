@@ -43,7 +43,7 @@ public interface DetalleVentaRepository extends JpaRepository<DetalleVenta, Long
      * @param libroId ID del libro
      * @return Cantidad total vendida
      */
-    @Query(value = "SELECT SUM(dv.cantidad) FROM detalles_venta dv WHERE dv.libro_id = :libroId", 
-           nativeQuery = true)
+    @Query(value = "SELECT SUM(dv.cantidad) FROM detalles_venta dv WHERE dv.libro_id = :libroId",
+            nativeQuery = true)
     Integer sumCantidadVendidaPorLibro(@Param("libroId") Long libroId);
 }

@@ -3,7 +3,6 @@ package mx.uam.libreria.prueba.servicio.Impl;
 import mx.uam.libreria.prueba.entidades.Libro;
 import mx.uam.libreria.prueba.repositorio.LibroRepository;
 import mx.uam.libreria.prueba.servicio.LibroService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -12,8 +11,11 @@ import java.util.Optional;
 @Service
 public class LibroServiceImpl implements LibroService {
 
-    @Autowired
-    private LibroRepository libroRepository;
+    private final LibroRepository libroRepository;
+
+    public LibroServiceImpl(LibroRepository libroRepository) {
+        this.libroRepository = libroRepository;
+    }
 
     @Override
     public List<Libro> listarTodos() {
@@ -55,7 +57,7 @@ public class LibroServiceImpl implements LibroService {
     public Optional<Libro> actualizarStock(Long id, int cantidad) {
         return libroRepository.findById(id)
                 .map(libro -> {
-                    libro.aumentarStock(cantidad); // o reducirStock según necesidad
+                    libro.aumentarStock(cantidad);
                     return libroRepository.save(libro);
                 });
     }

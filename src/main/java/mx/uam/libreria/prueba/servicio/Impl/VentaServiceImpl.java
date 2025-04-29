@@ -5,7 +5,6 @@ import mx.uam.libreria.prueba.dto.TicketDTO;
 import mx.uam.libreria.prueba.entidades.*;
 import mx.uam.libreria.prueba.repositorio.*;
 import mx.uam.libreria.prueba.servicio.VentaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
@@ -15,35 +14,34 @@ import java.util.Optional;
 @Service
 public class VentaServiceImpl implements VentaService {
 
-    @Autowired
-    private VentaRepository ventaRepository;
+    private final VentaRepository ventaRepository;
+    private final ClienteRepository clienteRepository;
+    private final LibroRepository libroRepository;
 
-    @Autowired
-    private ClienteRepository clienteRepository;
-
-    @Autowired
-    private LibroRepository libroRepository;
+    public VentaServiceImpl(VentaRepository ventaRepository,
+                            ClienteRepository clienteRepository,
+                            LibroRepository libroRepository) {
+        this.ventaRepository = ventaRepository;
+        this.clienteRepository = clienteRepository;
+        this.libroRepository = libroRepository;
+    }
 
     @Override
     @Transactional
     public Venta registrarVenta(SolicitudVentaDTO solicitud) {
-        // Validación de parámetros
         if (solicitud == null) {
             throw new IllegalArgumentException("La solicitud no puede ser nula");
         }
 
-        // 1. Validar cliente
         Cliente cliente = clienteRepository.findById(solicitud.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente no encontrado con ID: " + solicitud.getClienteId()));
 
-        // 2. Crear venta
         Venta venta = new Venta();
         venta.setCliente(cliente);
         venta.setFecha(LocalDate.now());
         venta.setDescuento(solicitud.getDescuento());
         venta.setTotal(0.0);
 
-        // 3. Procesar detalles
         for (SolicitudVentaDTO.DetalleVentaDTO detalleDTO : solicitud.getDetalles()) {
             Libro libro = libroRepository.findById(detalleDTO.getLibroId())
                     .orElseThrow(() -> new RuntimeException("Libro no encontrado: ID " + detalleDTO.getLibroId()));
@@ -63,7 +61,6 @@ public class VentaServiceImpl implements VentaService {
             libroRepository.save(libro);
         }
 
-        // 4. Calcular total
         double subtotal = venta.getDetalles().stream()
                 .mapToDouble(DetalleVenta::getSubtotal)
                 .sum();
@@ -73,42 +70,43 @@ public class VentaServiceImpl implements VentaService {
         return ventaRepository.save(venta);
     }
 
-    // Implementación de los demás métodos...
     @Override
-    public List<Venta> listarTodas() {
+    @Transactional(readOnly = true)
+    public List<Venta> obtenerTodasLasVentas() {
         return ventaRepository.findAll();
     }
 
     @Override
+    @Transactional(readOnly = true)
     public Optional<Venta> obtenerVentaPorId(Long id) {
         return ventaRepository.findById(id);
     }
 
     @Override
+    @Transactional
     public Venta guardarVenta(Venta venta) {
         return ventaRepository.save(venta);
     }
 
     @Override
+    @Transactional
     public void eliminarVenta(Long id) {
         ventaRepository.deleteById(id);
     }
 
+    // Métodos no implementados (se mantienen igual)
     @Override
     public Venta procesarVenta(Long clienteId, List<DetalleVenta> detallesRequest) {
-        // Implementación pendiente
         return null;
     }
 
     @Override
     public TicketDTO generarTicketVenta(Long clienteId, List<SolicitudVentaDTO.DetalleVentaDTO> items) {
-        // Implementación pendiente
         return null;
     }
 
     @Override
     public Optional<TicketDTO> obtenerTicketPorVentaId(Long id) {
-        // Implementación pendiente
         return Optional.empty();
     }
 

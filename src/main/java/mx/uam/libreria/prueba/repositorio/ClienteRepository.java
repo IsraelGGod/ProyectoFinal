@@ -11,16 +11,16 @@ public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
     // Método existente
     Optional<Cliente> findByEmail(String email);
-    
+
     // Nuevos métodos requeridos
     List<Cliente> findByMatriculado(boolean matriculado);
-    
+
     List<Cliente> findByMatriculaContainingIgnoreCase(String matricula);
-    
+
     boolean existsByMatricula(String matricula);
-    
+
     boolean existsByEmail(String email);
-    
+
     // Método alternativo para búsqueda flexible de matrícula
     List<Cliente> findByMatriculaStartingWithIgnoreCase(String prefijoMatricula);
 }

@@ -3,14 +3,17 @@ package mx.uam.libreria.prueba.servicio.Impl;
 import mx.uam.libreria.prueba.entidades.DetalleVenta;
 import mx.uam.libreria.prueba.repositorio.DetalleVentaRepository;
 import mx.uam.libreria.prueba.servicio.DetalleVentaService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DetalleVentaServiceImpl implements DetalleVentaService { // Implementa la interfaz
-    @Autowired
-    private DetalleVentaRepository detalleVentaRepository;
+public class DetalleVentaServiceImpl implements DetalleVentaService {
+
+    private final DetalleVentaRepository detalleVentaRepository;
+
+    public DetalleVentaServiceImpl(DetalleVentaRepository detalleVentaRepository) {
+        this.detalleVentaRepository = detalleVentaRepository;
+    }
 
     @Override
     public List<DetalleVenta> listarTodos() {

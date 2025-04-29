@@ -8,9 +8,10 @@ import mx.uam.libreria.prueba.dto.SolicitudVentaDTO;
 import mx.uam.libreria.prueba.entidades.DetalleVenta;
 import org.springframework.transaction.annotation.Transactional;
 
-
 public interface VentaService {
-    List<Venta> listarTodas();
+    // Método renombrado para mantener consistencia
+    List<Venta> obtenerTodasLasVentas();
+
     Optional<Venta> obtenerVentaPorId(Long id);
     Venta guardarVenta(Venta venta);
     void eliminarVenta(Long id);
@@ -24,4 +25,10 @@ public interface VentaService {
 
     @Transactional
     Venta registrarVenta(SolicitudVentaDTO solicitud);
+
+    // Mantenemos el método antiguo por compatibilidad (opcional)
+    @Deprecated
+    default List<Venta> listarTodas() {
+        return this.obtenerTodasLasVentas();
+    }
 }

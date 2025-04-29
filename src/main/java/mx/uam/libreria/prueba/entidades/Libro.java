@@ -2,6 +2,7 @@ package mx.uam.libreria.prueba.entidades;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.util.Objects;
 
 @Entity
 @Table(name = "libros")
@@ -30,9 +31,11 @@ public class Libro {
 
     // Constructores
     public Libro() {
+        this.stock = 0; // Valor por defecto
     }
 
     public Libro(String titulo, String autor, double precio, Integer stock) {
+        this();
         this.titulo = titulo;
         this.autor = autor;
         this.precio = precio;
@@ -53,10 +56,10 @@ public class Libro {
     }
 
     public void setTitulo(String titulo) {
-        if (titulo == null || titulo.trim().isEmpty()) {
+        this.titulo = Objects.requireNonNull(titulo, "El título no puede ser nulo").trim();
+        if (this.titulo.isEmpty()) {
             throw new IllegalArgumentException("El título no puede estar vacío");
         }
-        this.titulo = titulo;
     }
 
     public String getAutor() {
@@ -64,10 +67,10 @@ public class Libro {
     }
 
     public void setAutor(String autor) {
-        if (autor == null || autor.trim().isEmpty()) {
+        this.autor = Objects.requireNonNull(autor, "El autor no puede ser nulo").trim();
+        if (this.autor.isEmpty()) {
             throw new IllegalArgumentException("El autor no puede estar vacío");
         }
-        this.autor = autor;
     }
 
     public double getPrecio() {
@@ -82,67 +85,61 @@ public class Libro {
     }
 
     public Integer getStock() {
-        return stock;
+        return stock != null ? stock : 0;
     }
 
     public void setStock(Integer stock) {
-        if (stock < 0) {
+        if (stock == null || stock < 0) {
             throw new IllegalArgumentException("El stock no puede ser negativo");
         }
         this.stock = stock;
     }
 
-    // Métodos de negocio
-    /**
-     * Reduce el stock del libro cuando se vende
-     * @param cantidad La cantidad a reducir
-     * @throws IllegalArgumentException Si la cantidad no es positiva
-     * @throws IllegalStateException Si no hay suficiente stock
-     */
+    // Métodos de negocio mejorados
     public void reducirStock(int cantidad) {
         if (cantidad <= 0) {
-            throw new IllegalArgumentException("La cantidad debe ser positiva");
+            throw new IllegalArgumentException("La cantidad a reducir debe ser positiva");
         }
-        if (this.stock < cantidad) {
+        if (getStock() < cantidad) {
             throw new IllegalStateException(
-                String.format("Stock insuficiente. Disponible: %d, Solicitado: %d", this.stock, cantidad)
+                    String.format("No hay suficiente stock. Disponible: %d, Solicitado: %d", getStock(), cantidad)
             );
         }
         this.stock -= cantidad;
     }
 
-    /**
-     * Aumenta el stock del libro (para reposiciones)
-     * @param cantidad La cantidad a aumentar
-     * @throws IllegalArgumentException Si la cantidad no es positiva
-     */
     public void aumentarStock(int cantidad) {
         if (cantidad <= 0) {
-            throw new IllegalArgumentException("La cantidad debe ser positiva");
+            throw new IllegalArgumentException("La cantidad a aumentar debe ser positiva");
         }
         this.stock += cantidad;
     }
 
-    // Métodos de comparación
+    // equals() y hashCode() mejorados
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Libro libro = (Libro) o;
-        return titulo.equalsIgnoreCase(libro.titulo) && 
-               autor.equalsIgnoreCase(libro.autor);
+        return Objects.equals(titulo.toLowerCase(), libro.titulo.toLowerCase()) &&
+                Objects.equals(autor.toLowerCase(), libro.autor.toLowerCase());
     }
 
     @Override
     public int hashCode() {
-        return (titulo.toLowerCase() + autor.toLowerCase()).hashCode();
+        return Objects.hash(titulo.toLowerCase(), autor.toLowerCase());
     }
 
+    // toString() más seguro para valores nulos
     @Override
     public String toString() {
         return String.format(
-            "Libro [id=%d, titulo='%s', autor='%s', precio=%.2f, stock=%d]",
-            id, titulo, autor, precio, stock
+                "Libro[id=%d, titulo='%s', autor='%s', precio=%.2f, stock=%d]",
+                id != null ? id : 0,
+                titulo != null ? titulo : "",
+                autor != null ? autor : "",
+                precio,
+                getStock()
         );
     }
 }
