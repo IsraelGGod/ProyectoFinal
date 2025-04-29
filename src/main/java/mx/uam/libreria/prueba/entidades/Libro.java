@@ -7,6 +7,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "libros")
 public class Libro {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -29,6 +30,7 @@ public class Libro {
     @Column(nullable = false)
     private Integer stock;
 
+<<<<<<< HEAD
     // Constructores
     public Libro() {
         this.stock = 0; // Valor por defecto
@@ -36,13 +38,26 @@ public class Libro {
 
     public Libro(String titulo, String autor, double precio, Integer stock) {
         this();
+=======
+    @NotBlank(message = "El código de barras no puede estar en blanco")
+    @Column(name = "codigo_barras", nullable = false)
+    private String codigoBarras;
+
+    // === Constructores ===
+
+    public Libro() {}
+
+    public Libro(String titulo, String autor, double precio, Integer stock, String codigoBarras) {
+>>>>>>> origin/charly-rama
         this.titulo = titulo;
         this.autor = autor;
         this.precio = precio;
         this.stock = stock;
+        this.codigoBarras = codigoBarras;
     }
 
-    // Getters y Setters con validaciones
+    // === Getters y Setters ===
+
     public Long getId() {
         return id;
     }
@@ -95,14 +110,34 @@ public class Libro {
         this.stock = stock;
     }
 
+<<<<<<< HEAD
     // Métodos de negocio mejorados
+=======
+    public String getCodigoBarras() {
+        return codigoBarras;
+    }
+
+    public void setCodigoBarras(String codigoBarras) {
+        if (codigoBarras == null || codigoBarras.trim().isEmpty()) {
+            throw new IllegalArgumentException("El código de barras no puede estar vacío");
+        }
+        this.codigoBarras = codigoBarras;
+    }
+
+    // === Métodos de negocio ===
+
+>>>>>>> origin/charly-rama
     public void reducirStock(int cantidad) {
         if (cantidad <= 0) {
             throw new IllegalArgumentException("La cantidad a reducir debe ser positiva");
         }
         if (getStock() < cantidad) {
             throw new IllegalStateException(
+<<<<<<< HEAD
                     String.format("No hay suficiente stock. Disponible: %d, Solicitado: %d", getStock(), cantidad)
+=======
+                    String.format("Stock insuficiente. Disponible: %d, Solicitado: %d", this.stock, cantidad)
+>>>>>>> origin/charly-rama
             );
         }
         this.stock -= cantidad;
@@ -115,14 +150,24 @@ public class Libro {
         this.stock += cantidad;
     }
 
+<<<<<<< HEAD
     // equals() y hashCode() mejorados
+=======
+    // === Métodos utilitarios ===
+
+>>>>>>> origin/charly-rama
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Libro libro = (Libro) o;
+<<<<<<< HEAD
         return Objects.equals(titulo.toLowerCase(), libro.titulo.toLowerCase()) &&
                 Objects.equals(autor.toLowerCase(), libro.autor.toLowerCase());
+=======
+        return titulo.equalsIgnoreCase(libro.titulo) &&
+                autor.equalsIgnoreCase(libro.autor);
+>>>>>>> origin/charly-rama
     }
 
     @Override
@@ -134,12 +179,17 @@ public class Libro {
     @Override
     public String toString() {
         return String.format(
+<<<<<<< HEAD
                 "Libro[id=%d, titulo='%s', autor='%s', precio=%.2f, stock=%d]",
                 id != null ? id : 0,
                 titulo != null ? titulo : "",
                 autor != null ? autor : "",
                 precio,
                 getStock()
+=======
+                "Libro [id=%d, titulo='%s', autor='%s', precio=%.2f, stock=%d, codigoBarras='%s']",
+                id, titulo, autor, precio, stock, codigoBarras
+>>>>>>> origin/charly-rama
         );
     }
 }
