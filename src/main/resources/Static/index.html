@@ -4,21 +4,425 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Librería Universitaria UAM</title>
-    <link rel="stylesheet" href="css/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Merriweather:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --light-color: #ecf0f1;
+            --dark-color: #2c3e50;
+            --success-color: #2ecc71;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-container img {
+            height: 50px;
+        }
+
+        .logo-container h1 {
+            font-family: 'Merriweather', serif;
+            font-size: 1.8rem;
+            margin: 0;
+            color: white;
+        }
+
+        .logo-container i {
+            font-size: 2rem;
+            color: var(--secondary-color);
+        }
+
+        nav {
+            margin-top: 1rem;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            gap: 1rem;
+        }
+
+        nav li a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
+
+        nav li a:hover, nav li a.active {
+            background-color: var(--secondary-color);
+        }
+
+        main {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .welcome-banner {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .welcome-banner h2 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .welcome-banner p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .welcome-banner i {
+            color: var(--secondary-color);
+            font-size: 1.5rem;
+        }
+
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .stat-card p {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Merriweather', serif;
+            color: var(--primary-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #d5dbdb;
+        }
+
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .search-bar input {
+            flex: 1;
+            min-width: 200px;
+            padding: 0.6rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .search-bar select {
+            padding: 0.6rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+        }
+
+        .table-container {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            background-color: var(--light-color);
+            color: var(--dark-color);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 0.4rem 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-danger {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background-color: #c0392b;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #27ae60;
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            overflow: auto;
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            color: #aaa;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--dark-color);
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .detalles-venta {
+            margin-bottom: 1.5rem;
+        }
+
+        .detalle-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+            align-items: center;
+        }
+
+        .detalle-item select {
+            flex: 2;
+        }
+
+        .detalle-item input {
+            flex: 1;
+        }
+
+        .resumen-venta {
+            background-color: var(--light-color);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+        }
+
+        .resumen-venta p {
+            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            nav ul {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .section-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .search-bar {
+                flex-direction: column;
+            }
+
+            .search-bar input,
+            .search-bar select,
+            .search-bar button {
+                width: 100%;
+            }
+
+            .detalle-item {
+                flex-direction: column;
+                align-items: stretch;
+            }
+        }
+    </style>
 </head>
 <body>
 <header>
     <div class="logo-container">
-        <img src="img/logo.png" alt="Logo Librería UAM">
-        <h1>Librería Universitaria UAM</h1>
+        <h1><i class="fas fa-book-open"></i> Librería Universitaria UAM</h1>
     </div>
     <nav>
         <ul>
-            <li><a href="#" class="nav-link active" data-section="inicio">Inicio</a></li>
-            <li><a href="#" class="nav-link" data-section="clientes">Clientes</a></li>
-            <li><a href="#" class="nav-link" data-section="libros">Libros</a></li>
-            <li><a href="#" class="nav-link" data-section="ventas">Ventas</a></li>
+            <li><a href="#" class="nav-link active" data-section="inicio"><i class="fas fa-home"></i> Inicio</a></li>
+            <li><a href="#" class="nav-link" data-section="clientes"><i class="fas fa-users"></i> Clientes</a></li>
+            <li><a href="#" class="nav-link" data-section="libros"><i class="fas fa-book"></i> Libros</a></li>
+            <li><a href="#" class="nav-link" data-section="ventas"><i class="fas fa-shopping-cart"></i> Ventas</a></li>
         </ul>
     </nav>
 </header>
@@ -27,20 +431,20 @@
     <!-- Sección Inicio -->
     <section id="inicio" class="content-section active">
         <div class="welcome-banner">
-            <h2>Bienvenido al Sistema de Gestión de Librería</h2>
-            <p>Gestiona clientes, libros y ventas de manera eficiente</p>
+            <h2><i class="fas fa-book-reader"></i> Bienvenido al Sistema de Gestión de Librería</h2>
+            <p><i class="fas fa-university"></i> Gestiona clientes, libros y ventas de manera eficiente</p>
         </div>
         <div class="stats-container">
             <div class="stat-card">
-                <h3>Clientes Registrados</h3>
+                <h3><i class="fas fa-user-friends"></i> Clientes Registrados</h3>
                 <p id="total-clientes">0</p>
             </div>
             <div class="stat-card">
-                <h3>Libros en Inventario</h3>
+                <h3><i class="fas fa-book-open"></i> Libros en Inventario</h3>
                 <p id="total-libros">0</p>
             </div>
             <div class="stat-card">
-                <h3>Ventas Hoy</h3>
+                <h3><i class="fas fa-chart-line"></i> Ventas Hoy</h3>
                 <p id="ventas-hoy">0</p>
             </div>
         </div>
@@ -49,25 +453,25 @@
     <!-- Sección Clientes -->
     <section id="clientes" class="content-section">
         <div class="section-header">
-            <h2>Gestión de Clientes</h2>
-            <button id="nuevo-cliente" class="btn-primary">Nuevo Cliente</button>
+            <h2><i class="fas fa-users"></i> Gestión de Clientes</h2>
+            <button id="nuevo-cliente" class="btn btn-primary"><i class="fas fa-user-plus"></i> Nuevo Cliente</button>
         </div>
 
         <div class="clientes-container">
             <div class="search-bar">
                 <input type="text" id="buscar-cliente" placeholder="Buscar cliente...">
-                <button id="btn-buscar-cliente">Buscar</button>
+                <button id="btn-buscar-cliente" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
             </div>
 
             <div class="table-container">
                 <table id="tabla-clientes">
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Email</th>
-                        <th>Matrícula</th>
-                        <th>Acciones</th>
+                        <th><i class="fas fa-id-card"></i> ID</th>
+                        <th><i class="fas fa-user"></i> Nombre</th>
+                        <th><i class="fas fa-envelope"></i> Email</th>
+                        <th><i class="fas fa-id-badge"></i> Matrícula</th>
+                        <th><i class="fas fa-cog"></i> Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -81,8 +485,8 @@
     <!-- Sección Libros -->
     <section id="libros" class="content-section">
         <div class="section-header">
-            <h2>Gestión de Libros</h2>
-            <button id="nuevo-libro" class="btn-primary">Nuevo Libro</button>
+            <h2><i class="fas fa-book"></i> Gestión de Libros</h2>
+            <button id="nuevo-libro" class="btn btn-primary"><i class="fas fa-plus-circle"></i> Nuevo Libro</button>
         </div>
 
         <div class="libros-container">
@@ -92,19 +496,19 @@
                     <option value="titulo">Título</option>
                     <option value="autor">Autor</option>
                 </select>
-                <button id="btn-buscar-libro">Buscar</button>
+                <button id="btn-buscar-libro" class="btn btn-primary"><i class="fas fa-search"></i> Buscar</button>
             </div>
 
             <div class="table-container">
                 <table id="tabla-libros">
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Título</th>
-                        <th>Autor</th>
-                        <th>Precio</th>
-                        <th>Stock</th>
-                        <th>Acciones</th>
+                        <th><i class="fas fa-id-card"></i> ID</th>
+                        <th><i class="fas fa-heading"></i> Título</th>
+                        <th><i class="fas fa-user-edit"></i> Autor</th>
+                        <th><i class="fas fa-tag"></i> Precio</th>
+                        <th><i class="fas fa-boxes"></i> Stock</th>
+                        <th><i class="fas fa-cog"></i> Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -118,8 +522,8 @@
     <!-- Sección Ventas -->
     <section id="ventas" class="content-section">
         <div class="section-header">
-            <h2>Registro de Ventas</h2>
-            <button id="nueva-venta" class="btn-primary">Nueva Venta</button>
+            <h2><i class="fas fa-shopping-cart"></i> Registro de Ventas</h2>
+            <button id="nueva-venta" class="btn btn-primary"><i class="fas fa-cash-register"></i> Nueva Venta</button>
         </div>
 
         <div class="ventas-container">
@@ -127,11 +531,11 @@
                 <table id="tabla-ventas">
                     <thead>
                     <tr>
-                        <th>ID</th>
-                        <th>Cliente</th>
-                        <th>Fecha</th>
-                        <th>Total</th>
-                        <th>Acciones</th>
+                        <th><i class="fas fa-id-card"></i> ID</th>
+                        <th><i class="fas fa-user"></i> Cliente</th>
+                        <th><i class="fas fa-calendar-alt"></i> Fecha</th>
+                        <th><i class="fas fa-money-bill-wave"></i> Total</th>
+                        <th><i class="fas fa-cog"></i> Acciones</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -147,26 +551,26 @@
 <div id="modal-cliente" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2 id="modal-cliente-titulo">Nuevo Cliente</h2>
+        <h2 id="modal-cliente-titulo"><i class="fas fa-user-plus"></i> Nuevo Cliente</h2>
         <form id="form-cliente">
             <input type="hidden" id="cliente-id">
             <div class="form-group">
-                <label for="cliente-nombre">Nombre</label>
+                <label for="cliente-nombre"><i class="fas fa-user"></i> Nombre</label>
                 <input type="text" id="cliente-nombre" required>
             </div>
             <div class="form-group">
-                <label for="cliente-email">Email</label>
+                <label for="cliente-email"><i class="fas fa-envelope"></i> Email</label>
                 <input type="email" id="cliente-email" required>
             </div>
             <div class="form-group">
-                <label for="cliente-telefono">Teléfono</label>
+                <label for="cliente-telefono"><i class="fas fa-phone"></i> Teléfono</label>
                 <input type="text" id="cliente-telefono">
             </div>
             <div class="form-group">
-                <label for="cliente-matricula">Matrícula</label>
+                <label for="cliente-matricula"><i class="fas fa-id-badge"></i> Matrícula</label>
                 <input type="text" id="cliente-matricula">
             </div>
-            <button type="submit" class="btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
         </form>
     </div>
 </div>
@@ -174,26 +578,26 @@
 <div id="modal-libro" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2 id="modal-libro-titulo">Nuevo Libro</h2>
+        <h2 id="modal-libro-titulo"><i class="fas fa-book-medical"></i> Nuevo Libro</h2>
         <form id="form-libro">
             <input type="hidden" id="libro-id">
             <div class="form-group">
-                <label for="libro-titulo">Título</label>
+                <label for="libro-titulo"><i class="fas fa-heading"></i> Título</label>
                 <input type="text" id="libro-titulo" required>
             </div>
             <div class="form-group">
-                <label for="libro-autor">Autor</label>
+                <label for="libro-autor"><i class="fas fa-user-edit"></i> Autor</label>
                 <input type="text" id="libro-autor" required>
             </div>
             <div class="form-group">
-                <label for="libro-precio">Precio</label>
+                <label for="libro-precio"><i class="fas fa-tag"></i> Precio</label>
                 <input type="number" id="libro-precio" step="0.01" required>
             </div>
             <div class="form-group">
-                <label for="libro-stock">Stock</label>
+                <label for="libro-stock"><i class="fas fa-boxes"></i> Stock</label>
                 <input type="number" id="libro-stock" required>
             </div>
-            <button type="submit" class="btn-primary">Guardar</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Guardar</button>
         </form>
     </div>
 </div>
@@ -201,39 +605,39 @@
 <div id="modal-venta" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2 id="modal-venta-titulo">Nueva Venta</h2>
+        <h2 id="modal-venta-titulo"><i class="fas fa-cash-register"></i> Nueva Venta</h2>
         <form id="form-venta">
             <input type="hidden" id="venta-id">
             <div class="form-group">
-                <label for="venta-cliente">Cliente</label>
+                <label for="venta-cliente"><i class="fas fa-user"></i> Cliente</label>
                 <select id="venta-cliente" required>
                     <option value="">Seleccione un cliente</option>
                 </select>
             </div>
             <div class="form-group">
-                <label for="venta-descuento">Descuento (%)</label>
+                <label for="venta-descuento"><i class="fas fa-percentage"></i> Descuento (%)</label>
                 <input type="number" id="venta-descuento" min="0" max="100" value="0">
             </div>
 
-            <h3>Detalles de Venta</h3>
+            <h3><i class="fas fa-list"></i> Detalles de Venta</h3>
             <div class="detalles-venta">
                 <div class="detalle-item">
                     <select class="detalle-libro">
                         <option value="">Seleccione un libro</option>
                     </select>
                     <input type="number" class="detalle-cantidad" min="1" value="1" placeholder="Cantidad">
-                    <button type="button" class="btn-eliminar-detalle">Eliminar</button>
+                    <button type="button" class="btn btn-danger btn-sm btn-eliminar-detalle"><i class="fas fa-trash"></i> Eliminar</button>
                 </div>
             </div>
-            <button type="button" id="agregar-detalle" class="btn-secondary">+ Agregar Libro</button>
+            <button type="button" id="agregar-detalle" class="btn btn-secondary"><i class="fas fa-plus-circle"></i> Agregar Libro</button>
 
             <div class="resumen-venta">
-                <p><strong>Subtotal:</strong> $<span id="venta-subtotal">0.00</span></p>
-                <p><strong>Descuento:</strong> $<span id="venta-descuento-monto">0.00</span></p>
-                <p><strong>Total:</strong> $<span id="venta-total">0.00</span></p>
+                <p><strong><i class="fas fa-receipt"></i> Subtotal:</strong> $<span id="venta-subtotal">0.00</span></p>
+                <p><strong><i class="fas fa-tag"></i> Descuento:</strong> $<span id="venta-descuento-monto">0.00</span></p>
+                <p><strong><i class="fas fa-money-bill-wave"></i> Total:</strong> $<span id="venta-total">0.00</span></p>
             </div>
 
-            <button type="submit" class="btn-primary">Registrar Venta</button>
+            <button type="submit" class="btn btn-primary"><i class="fas fa-check-circle"></i> Registrar Venta</button>
         </form>
     </div>
 </div>
@@ -241,20 +645,20 @@
 <div id="modal-detalle-venta" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>Detalles de Venta</h2>
+        <h2><i class="fas fa-info-circle"></i> Detalles de Venta</h2>
         <div id="detalle-venta-info">
-            <p><strong>Cliente:</strong> <span id="detalle-cliente"></span></p>
-            <p><strong>Fecha:</strong> <span id="detalle-fecha"></span></p>
-            <p><strong>Total:</strong> $<span id="detalle-total"></span></p>
+            <p><strong><i class="fas fa-user"></i> Cliente:</strong> <span id="detalle-cliente"></span></p>
+            <p><strong><i class="fas fa-calendar-alt"></i> Fecha:</strong> <span id="detalle-fecha"></span></p>
+            <p><strong><i class="fas fa-money-bill-wave"></i> Total:</strong> $<span id="detalle-total"></span></p>
 
-            <h3>Libros vendidos</h3>
+            <h3><i class="fas fa-book"></i> Libros vendidos</h3>
             <table id="tabla-detalle-venta">
                 <thead>
                 <tr>
-                    <th>Libro</th>
-                    <th>Cantidad</th>
-                    <th>Precio Unitario</th>
-                    <th>Subtotal</th>
+                    <th><i class="fas fa-book"></i> Libro</th>
+                    <th><i class="fas fa-hashtag"></i> Cantidad</th>
+                    <th><i class="fas fa-tag"></i> Precio Unitario</th>
+                    <th><i class="fas fa-calculator"></i> Subtotal</th>
                 </tr>
                 </thead>
                 <tbody>
